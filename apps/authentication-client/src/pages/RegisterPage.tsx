@@ -7,7 +7,7 @@ const RegisterPage = () => {
   const { showLogin } = useSelector((state: RootState) => state.showLogin);
 
   return (
-    <div className="items-center h-screen">
+    <div className="flex items-center h-screen w-screen justify-center">
       {showLogin ? <LoginForm /> : <RegisterForm />}
     </div>
   );
