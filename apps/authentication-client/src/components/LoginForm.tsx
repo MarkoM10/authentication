@@ -2,12 +2,34 @@ import { useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useDispatch } from 'react-redux';
 import { setShowLogin } from '../redux/slices';
+import { validatePassword, validateUsername } from '../utils/validation';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState({
     pass: false,
     cfrnmPass: false,
+  });
+
+  const [validationState, setValidationState] = useState({
+    email: false,
+    username: false,
+    password: false,
+    confirmPassword: false,
+  });
+
+  const [errors, setErrors] = useState<any>({
+    emailErr: '',
+    usernameErr: '',
+    passwordErr: '',
+    confirmPasswordErr: '',
+  });
+
+  const [formData, setFormData] = useState<any>({
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const handleTogglePasswordVisibility = (type: string) => {
@@ -20,8 +42,56 @@ const LoginForm = () => {
   };
 
   const handleOnChange = (e: any) => {
-    console.log(e.target.value);
+    const { value, name } = e.target;
+    let isValid = true;
+    let errorMessage = '';
+
+    switch (name) {
+      case 'username':
+        isValid = validateUsername(value);
+        errorMessage = isValid ? '' : 'Username is not in a valid format.';
+        break;
+      case 'password':
+        isValid = validatePassword(value);
+        errorMessage = isValid ? '' : 'Password is not in a valid format.';
+        break;
+      default:
+        break;
+    }
+    setValidationState({ ...validationState, [name]: isValid });
+    setErrors({ ...errors, [`${name}Err`]: errorMessage });
+    setFormData({ ...formData, [name]: value });
   };
+
+  const validation = () => {
+    const { username, password } = validationState;
+    setErrors({
+      usernameErr: username ? '' : 'Username is not in a valid format.',
+      passwordErr: password ? '' : 'Password is not in a valid format.',
+    });
+
+    if (username && password) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const loginUserData = (e: any) => {
+    e.preventDefault();
+
+    const isValid = validation();
+    const { username, password } = formData;
+
+    if (isValid) {
+      console.log('Data valid for sending...');
+      console.log(username, password);
+    } else {
+      console.log('Data invalid for sending...');
+    }
+  };
+
+  const { usernameErr, passwordErr } = errors;
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -36,7 +106,13 @@ const LoginForm = () => {
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST" noValidate>
+        <form
+          className="space-y-6"
+          action="#"
+          method="POST"
+          noValidate
+          onSubmit={(e) => loginUserData(e)}
+        >
           <div>
             <label
               htmlFor="username"
@@ -54,6 +130,11 @@ const LoginForm = () => {
                 className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 onChange={(e) => handleOnChange(e)}
               />
+            </div>
+            <div>
+              {usernameErr && (
+                <p className="text-red-500 mt-2 text-xs">{usernameErr}</p>
+              )}
             </div>
           </div>
           <div>
@@ -86,6 +167,11 @@ const LoginForm = () => {
                   <EyeIcon className="w-5 h-5" />
                 )}
               </button>
+            </div>
+            <div>
+              {passwordErr && (
+                <p className="text-red-500 mt-2 text-xs">{passwordErr}</p>
+              )}
             </div>
           </div>
           <p className="text-sm text-royal-blue-500">

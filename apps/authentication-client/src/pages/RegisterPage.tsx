@@ -5,7 +5,6 @@ import { RootState } from '../redux/store';
 
 const RegisterPage = () => {
   const { showLogin } = useSelector((state: RootState) => state.showLogin);
-  console.log(showLogin);
 
   return (
     <div className="items-center h-screen">
