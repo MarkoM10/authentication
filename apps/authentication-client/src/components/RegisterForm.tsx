@@ -8,8 +8,10 @@ import {
   validateUsername,
 } from '../utils/validation';
 import heroImg from '../assets/images/hero.jpg';
+import axios from 'axios';
 
 const RegisterForm = () => {
+  const BASE_URL = 'http://localhost:3600/register';
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState({
@@ -94,7 +96,7 @@ const RegisterForm = () => {
     }
   };
 
-  const registerUserData = (e: any) => {
+  const registerUserData = async (e: any) => {
     e.preventDefault();
 
     const isValid = validation();
@@ -103,6 +105,16 @@ const RegisterForm = () => {
     if (isValid) {
       console.log('Data valid for sending...');
       console.log(email, username, password);
+
+      const userRegisterData = { email, username, password };
+
+      try {
+        const response = await axios.post(BASE_URL, userRegisterData);
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       console.log('Data invalid for sending...');
     }
