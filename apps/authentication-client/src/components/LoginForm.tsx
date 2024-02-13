@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import { setShowLogin } from '../redux/slices';
 import { validatePassword, validateUsername } from '../utils/validation';
 import heroImg from '../assets/images/hero.jpg';
+import axios from 'axios';
 
 const LoginForm = () => {
+  const BASE_URL = 'http://localhost:3600';
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState({
     pass: false,
@@ -78,7 +80,7 @@ const LoginForm = () => {
     }
   };
 
-  const loginUserData = (e: any) => {
+  const loginUserData = async (e: any) => {
     e.preventDefault();
 
     const isValid = validation();
@@ -87,6 +89,14 @@ const LoginForm = () => {
     if (isValid) {
       console.log('Data valid for sending...');
       console.log(username, password);
+
+      const userLoginData = { username, password };
+
+      try {
+        const response = await axios.post(BASE_URL + '/login', userLoginData);
+
+        console.log(response);
+      } catch (error) {}
     } else {
       console.log('Data invalid for sending...');
     }

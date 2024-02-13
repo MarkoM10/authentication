@@ -11,7 +11,7 @@ import heroImg from '../assets/images/hero.jpg';
 import axios from 'axios';
 
 const RegisterForm = () => {
-  const BASE_URL = 'http://localhost:3600/register';
+  const BASE_URL = 'http://localhost:3600';
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState({
@@ -109,7 +109,10 @@ const RegisterForm = () => {
       const userRegisterData = { email, username, password };
 
       try {
-        const response = await axios.post(BASE_URL, userRegisterData);
+        const response = await axios.post(
+          BASE_URL + '/register',
+          userRegisterData
+        );
 
         console.log(response);
       } catch (error) {
