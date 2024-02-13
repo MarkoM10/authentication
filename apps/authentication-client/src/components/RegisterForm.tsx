@@ -9,8 +9,12 @@ import {
 } from '../utils/validation';
 import heroImg from '../assets/images/hero.jpg';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import SpinnerComponent from './SpinnerComponent';
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+
   const BASE_URL = 'http://localhost:3600';
   const dispatch = useDispatch();
 
@@ -114,7 +118,9 @@ const RegisterForm = () => {
           userRegisterData
         );
 
-        console.log(response);
+        if (response.status === 200) {
+          navigate('/homepage');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -126,16 +132,16 @@ const RegisterForm = () => {
   const { emailErr, usernameErr, passwordErr, confirmPasswordErr } = errors;
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 max-w-screen-2xl w-full">
-      <section className="grid grid-cols-2">
+    <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <section>
         <div className="flex items-center">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm m-5">
             {/* <img
           className="mx-auto h-10 w-auto"
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         /> */}
-            <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            <h2 className="text-2xl font-bold leading-9 tracking-tight text-white">
               Register your account
             </h2>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -149,7 +155,7 @@ const RegisterForm = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 text-white"
                   >
                     Email address
                   </label>
@@ -174,7 +180,7 @@ const RegisterForm = () => {
                 <div>
                   <label
                     htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 text-white"
                   >
                     Username
                   </label>
@@ -200,7 +206,7 @@ const RegisterForm = () => {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="password"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-white"
                     >
                       Password
                     </label>
@@ -238,7 +244,7 @@ const RegisterForm = () => {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="confirmPassword"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-white"
                     >
                       Confirm password
                     </label>
@@ -275,7 +281,7 @@ const RegisterForm = () => {
                     )}
                   </div>
                 </div>
-                <p className="text-sm text-royal-blue-500">
+                <p className="text-sm text-white">
                   Already have an account?
                   <span
                     className="font-semibold leading-6 text-indigo-600 hover:cursor-pointer px-1"
@@ -295,9 +301,6 @@ const RegisterForm = () => {
               </form>
             </div>
           </div>
-        </div>
-        <div className="flex ">
-          <img className="h-full" src={heroImg}></img>
         </div>
       </section>
     </div>
