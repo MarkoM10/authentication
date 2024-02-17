@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useDispatch } from 'react-redux';
-import { setShowLogin } from '../redux/slices';
+import { setShowLogin } from '../redux/slices/loginSlice';
 import { validatePassword, validateUsername } from '../utils/validation';
 import heroImg from '../assets/images/hero.jpg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { setShowSpinner } from '../redux/slices/spinnerSlice';
+import { setShowAlert } from '../redux/slices/alertSlice';
 
 const LoginForm = () => {
   const BASE_URL = 'http://localhost:3600';
@@ -95,15 +97,40 @@ const LoginForm = () => {
       const userLoginData = { username, password };
 
       try {
+        dispatch(setShowSpinner(true));
         const response = await axios.post(BASE_URL + '/login', userLoginData);
+
         const resStatus = response.status;
 
         if (resStatus === 200) {
+          dispatch(setShowSpinner(false));
+          dispatch(
+            setShowAlert({
+              showAlert: false,
+            })
+          );
           navigate('/homepage');
-        } else if (resStatus === 401) {
-          console.log('User with given credentials doesnt exist.');
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error:', error);
+        dispatch(setShowSpinner(false));
+        dispatch(
+          setShowAlert({
+            showAlert: true,
+            alertHeading: 'User not found',
+            alertParagraph: "User with given credentials doesn't exist.",
+          })
+        );
+        setTimeout(() => {
+          dispatch(
+            setShowAlert({
+              showAlert: false,
+              alertHeading: '',
+              alertParagraph: '',
+            })
+          );
+        }, 5000);
+      }
     } else {
       console.log('Data invalid for sending...');
     }

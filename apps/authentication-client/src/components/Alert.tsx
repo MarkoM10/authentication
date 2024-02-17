@@ -1,8 +1,13 @@
-import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const Alert = () => {
+  const { alertHeading, alertParagraph } = useSelector(
+    (state: RootState) => state.showAlert.showAlert
+  );
+
   return (
-    <div className="flex w-4/6">
+    <div className="flex w-full md:mt-0 sm:max-w-md xl:p-0">
       <div
         className="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md flex lg:px-8 max-w-screen-2xl w-full"
         role="alert"
@@ -18,10 +23,8 @@ const Alert = () => {
             </svg>
           </div>
           <div>
-            <p className="font-bold">Not authorized</p>
-            <p className="text-sm">
-              User with given credentials doesn't exist.
-            </p>
+            <p className="font-bold">{alertHeading}</p>
+            <p className="text-sm">{alertParagraph}</p>
           </div>
         </div>
       </div>

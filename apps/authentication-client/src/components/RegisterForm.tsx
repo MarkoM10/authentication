@@ -1,16 +1,17 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setShowLogin } from '../redux/slices';
+import { setShowLogin } from '../redux/slices/loginSlice';
 import {
   validateEmail,
   validatePassword,
   validateUsername,
 } from '../utils/validation';
-import heroImg from '../assets/images/hero.jpg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import SpinnerComponent from './SpinnerComponent';
+import { setShowSpinner } from '../redux/slices/spinnerSlice';
+import { setShowAlert } from '../redux/slices/alertSlice';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -113,16 +114,38 @@ const RegisterForm = () => {
       const userRegisterData = { email, username, password };
 
       try {
+        dispatch(setShowSpinner(true));
         const response = await axios.post(
           BASE_URL + '/register',
           userRegisterData
         );
 
+        dispatch(setShowSpinner(false));
+
         if (response.status === 200) {
           navigate('/homepage');
         }
       } catch (error) {
-        console.log(error);
+        // console.log('Error: ', error);
+        dispatch(setShowSpinner(false));
+        dispatch(
+          setShowAlert({
+            showAlert: true,
+            alertHeading: 'Email already in use',
+            alertParagraph:
+              'Email already exists. Please use a different email address or try logging in.',
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(
+            setShowAlert({
+              showAlert: false,
+              alertHeading: '',
+              alertParagraph: '',
+            })
+          );
+        }, 5000);
       }
     } else {
       console.log('Data invalid for sending...');

@@ -3,18 +3,20 @@ import Homepage from '../pages/Homepage';
 import RegisterPage from '../pages/RegisterPage';
 import { Route, Routes } from 'react-router-dom';
 import bgImg from '../assets/images/formBgImg.jpg';
+import SpinnerComponent from '../components/SpinnerComponent';
 
 export function App() {
   return (
     <div style={{ background: `url(${bgImg})`, backgroundSize: 'cover' }}>
-      {/* <div className="row-span-1 h-10vh flex items-center justify-center w-screen">
-        <Dialogs />
-      </div> */}
-      <div className="bg-gray-900 bg-opacity-50 grid h-screen justify-items-center">
-        <Routes>
-          <Route index element={<RegisterPage />} path="/" />
-          <Route element={<Homepage />} path="/homepage" />
-        </Routes>
+      <div className="bg-gray-900 bg-opacity-70 flex h-screen justify-items-center flex-col">
+        <SpinnerComponent />
+        <div className="flex items-center justify-center w-screen flex-col h-screen items-center gap-3 relative">
+          <Dialogs />
+          <Routes>
+            <Route index element={<RegisterPage />} path="/" />
+            <Route element={<Homepage />} path="/homepage" />
+          </Routes>
+        </div>
       </div>
     </div>
   );
