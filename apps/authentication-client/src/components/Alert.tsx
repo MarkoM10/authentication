@@ -7,7 +7,7 @@ const Alert = () => {
   );
 
   return (
-    <div className="flex w-full md:mt-0 sm:max-w-md xl:p-0">
+    <div className="flex w-11/12 sm:w-full md:mt-0 sm:max-w-md xl:p-0">
       <div
         className="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md flex lg:px-8 max-w-screen-2xl w-full"
         role="alert"
