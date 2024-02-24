@@ -13,7 +13,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        midnightBlue: '#191970',
+        'regal-blue': '#465362',
+        'main-blue': '#4F46E5',
       },
     },
   },

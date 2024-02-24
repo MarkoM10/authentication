@@ -1,5 +1,7 @@
+import Stepper from '../components/Stepper/Stepper';
+
 const Homepage = () => {
-  return <div>Homepage</div>;
+  return <Stepper />;
 };
 
 export default Homepage;

@@ -7,6 +7,7 @@ module.exports = {
     path: join(__dirname, '../../dist/apps/authentication-client'),
   },
   devServer: {
+    historyApiFallback: true,
     port: 4200,
   },
   plugins: [
