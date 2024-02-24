@@ -9,7 +9,6 @@ import {
 } from '../utils/validation';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import SpinnerComponent from './SpinnerComponent';
 import { setShowSpinner } from '../redux/slices/spinnerSlice';
 import { setShowAlert } from '../redux/slices/alertSlice';
 
@@ -69,6 +68,9 @@ const RegisterForm = () => {
         errorMessage = isValid ? '' : 'Username is not in a valid format.';
         break;
       case 'password':
+        const cfrnmPassword =
+          e.currentTarget.form.confirmPassword.value === value;
+        console.log(cfrnmPassword, 'test');
         isValid = validatePassword(value);
         errorMessage = isValid ? '' : 'Password is not in a valid format.';
         break;

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
 app.use(express.json());
 
 app.use(
@@ -35,19 +36,28 @@ app.post('/register', (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const newUser = { email, username, password };
-
-  db.query('INSERT INTO users SET ?', newUser, (err, result) => {
+  bcrypt.hash(password, 10, (err, hash) => {
     if (err) {
-      if (err.code === 'ER_DUP_ENTRY') {
-        return res.status(400).json({ error: 'Email address already exists' });
-      }
-      console.error('Error inserting user:', err);
+      console.error('Error hashing password:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
 
-    console.log('User registered successfully');
-    res.status(200).json({ message: 'User registered successfully' });
+    const newUser = { email, username, password: hash };
+
+    db.query('INSERT INTO users SET ?', newUser, (err, result) => {
+      if (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+          return res
+            .status(400)
+            .json({ error: 'Email address already exists' });
+        }
+        console.error('Error inserting user:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      console.log('User registered successfully');
+      res.status(200).json({ message: 'User registered successfully' });
+    });
   });
 });
 
@@ -75,15 +85,21 @@ app.post('/login', (req, res) => {
 
       const user = results[0];
 
-      // Compare the provided password with the stored password
-      if (password !== user.password) {
-        return res
-          .status(401)
-          .json({ error: 'Username or password is incorrect' });
-      }
+      bcrypt.compare(password, user.password, (err, passwordMatch) => {
+        if (err) {
+          console.error('Error comparing passwords:', err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
 
-      // Passwords match, user is authenticated
-      res.status(200).json({ message: 'User logged in successfully' });
+        if (!passwordMatch) {
+          return res
+            .status(401)
+            .json({ error: 'Username or password is incorrect' });
+        }
+
+        // Passwords match, user is authenticated
+        res.status(200).json({ message: 'User logged in successfully' });
+      });
     }
   );
 });
