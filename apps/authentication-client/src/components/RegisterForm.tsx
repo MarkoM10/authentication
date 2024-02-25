@@ -179,7 +179,9 @@ const RegisterForm = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-white"
+                  className={`block text-sm font-medium leading-6 text-white ${
+                    emailErr && 'text-red-700 dark:text-red-500'
+                  }`}
                 >
                   Email address
                 </label>
@@ -190,13 +192,19 @@ const RegisterForm = () => {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                      emailErr
+                        ? 'border  border-red-500 focus:ring-red-500'
+                        : ''
+                    }`}
                     onChange={(e) => handleOnChange(e)}
                   />
                 </div>
                 <div>
                   {emailErr && (
-                    <p className="text-red-500 mt-2 text-xs">{emailErr}</p>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                      {emailErr}
+                    </p>
                   )}
                 </div>
               </div>
@@ -204,7 +212,9 @@ const RegisterForm = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium leading-6 text-white"
+                  className={`block text-sm font-medium leading-6 text-white ${
+                    usernameErr && 'text-red-700 dark:text-red-500'
+                  }`}
                 >
                   Username
                 </label>
@@ -215,13 +225,19 @@ const RegisterForm = () => {
                     type="username"
                     autoComplete="username"
                     required
-                    className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                      usernameErr
+                        ? 'border  border-red-500 focus:ring-red-500'
+                        : ''
+                    }`}
                     onChange={(e) => handleOnChange(e)}
                   />
                 </div>
                 <div>
                   {usernameErr && (
-                    <p className="text-red-500 mt-2 text-xs">{usernameErr}</p>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                      {usernameErr}
+                    </p>
                   )}
                 </div>
               </div>
@@ -230,7 +246,9 @@ const RegisterForm = () => {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className={`block text-sm font-medium leading-6 text-white ${
+                      passwordErr && 'text-red-700 dark:text-red-500'
+                    }`}
                   >
                     Password
                   </label>
@@ -242,7 +260,11 @@ const RegisterForm = () => {
                     type={showPassword.pass ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
-                    className="block w-full rounded-md border-0 px-1.5 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                      passwordErr
+                        ? 'border  border-red-500 focus:ring-red-500'
+                        : ''
+                    }`}
                     onChange={(e) => handleOnChange(e)}
                   />
                   <button
@@ -259,7 +281,9 @@ const RegisterForm = () => {
                 </div>
                 <div>
                   {passwordErr && (
-                    <p className="text-red-500 mt-2 text-xs">{passwordErr}</p>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                      {passwordErr}
+                    </p>
                   )}
                 </div>
               </div>
@@ -268,7 +292,9 @@ const RegisterForm = () => {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="confirmPassword"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className={`block text-sm font-medium leading-6 text-white ${
+                      confirmPasswordErr && 'text-red-700 dark:text-red-500'
+                    }`}
                   >
                     Confirm password
                   </label>
@@ -280,7 +306,11 @@ const RegisterForm = () => {
                     type={showPassword.cfrnmPass ? 'text' : 'password'}
                     autoComplete="confirmPassword"
                     required
-                    className="block w-full rounded-md border-0 px-1.5 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                      confirmPasswordErr
+                        ? 'border  border-red-500 focus:ring-red-500'
+                        : ''
+                    }`}
                     onChange={(e) => handleOnChange(e)}
                   />
                   <button
@@ -297,7 +327,7 @@ const RegisterForm = () => {
                 </div>
                 <div>
                   {confirmPasswordErr && (
-                    <p className="text-red-500 mt-2 text-xs">
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                       {confirmPasswordErr}
                     </p>
                   )}

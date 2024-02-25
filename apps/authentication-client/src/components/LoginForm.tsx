@@ -161,7 +161,9 @@ const LoginForm = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium leading-6 text-white"
+                  className={`block text-sm font-medium leading-6 text-white ${
+                    usernameErr && 'text-red-700 dark:text-red-500'
+                  }`}
                 >
                   Username
                 </label>
@@ -172,7 +174,11 @@ const LoginForm = () => {
                     type="username"
                     autoComplete="username"
                     required
-                    className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                      usernameErr
+                        ? 'border  border-red-500 focus:ring-red-500'
+                        : ''
+                    }`}
                     onChange={(e) => handleOnChange(e)}
                   />
                 </div>
@@ -186,7 +192,9 @@ const LoginForm = () => {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-white"
+                    className={`block text-sm font-medium leading-6 text-white ${
+                      passwordErr && 'text-red-700 dark:text-red-500'
+                    }`}
                   >
                     Password
                   </label>
@@ -198,7 +206,11 @@ const LoginForm = () => {
                     type={showPassword.pass ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
-                    className="block w-full rounded-md border-0 px-1.5 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                      passwordErr
+                        ? 'border  border-red-500 focus:ring-red-500'
+                        : ''
+                    }`}
                     onChange={(e) => handleOnChange(e)}
                   />
                   <button
@@ -207,7 +219,7 @@ const LoginForm = () => {
                     onClick={() => handleTogglePasswordVisibility('pass')}
                   >
                     {showPassword.pass ? (
-                      <EyeSlashIcon className="w-5 h-5" /> // EyeOffIcon should represent the icon for hiding the password
+                      <EyeSlashIcon className="w-5 h-5" />
                     ) : (
                       <EyeIcon className="w-5 h-5" />
                     )}
