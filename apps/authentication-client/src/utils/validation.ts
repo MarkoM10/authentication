@@ -21,3 +21,13 @@ export const validatePassword = (password: string) => {
   }
   return true;
 };
+export const validateName = (name: string) => {
+  let validRegex = /^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$/;
+  const nameValid = name.match(validRegex) ? true : false;
+  return nameValid;
+};
+export const validatePhoneNumber = (phone: string) => {
+  let validRegex = '^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$';
+  const phoneValid = phone.match(validRegex) ? true : false;
+  return phoneValid;
+};

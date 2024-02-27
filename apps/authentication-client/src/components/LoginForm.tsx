@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useDispatch } from 'react-redux';
 import { setShowLogin } from '../redux/slices/loginSlice';
@@ -48,7 +48,7 @@ const LoginForm = () => {
         });
   };
 
-  const handleOnChange = (e: any) => {
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     let isValid = true;
     let errorMessage = '';
@@ -84,7 +84,7 @@ const LoginForm = () => {
     }
   };
 
-  const loginUserData = async (e: any) => {
+  const loginUserData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const isValid = validation();
@@ -184,7 +184,9 @@ const LoginForm = () => {
                 </div>
                 <div>
                   {usernameErr && (
-                    <p className="text-red-500 mt-2 text-xs">{usernameErr}</p>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                      {usernameErr}
+                    </p>
                   )}
                 </div>
               </div>
@@ -227,7 +229,9 @@ const LoginForm = () => {
                 </div>
                 <div>
                   {passwordErr && (
-                    <p className="text-red-500 mt-2 text-xs">{passwordErr}</p>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                      {passwordErr}
+                    </p>
                   )}
                 </div>
               </div>
