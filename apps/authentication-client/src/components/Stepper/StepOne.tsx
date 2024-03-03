@@ -67,8 +67,9 @@ const StepOne = () => {
   const handleNextStep = () => {
     const isValid = validation();
     console.log(isValid);
-
-    dispatch(incrementStep());
+    if (isValid) {
+      dispatch(incrementStep());
+    }
   };
 
   const { nameErr, phoneNumberErr, addressErr } = errors;

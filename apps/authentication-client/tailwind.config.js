@@ -17,6 +17,7 @@ module.exports = {
         'main-blue': '#4F46E5',
         'p-green': '#1EA896',
         'gray-light': '#374151',
+        'white-light': '#F7F7F2',
       },
     },
   },

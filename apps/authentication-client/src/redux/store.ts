@@ -3,6 +3,8 @@ import { showLoginReducer } from './slices/loginSlice';
 import { showSpinnerReducer } from './slices/spinnerSlice';
 import { showAlertReducer } from './slices/alertSlice';
 import { stepReducer } from './slices/stepSlice';
+import { modalReducer } from './slices/modalSlice';
+import { confirmReducer } from './slices/confirmationSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ const store = configureStore({
     showSpinner: showSpinnerReducer,
     showAlert: showAlertReducer,
     step: stepReducer,
+    modal: modalReducer,
+    confirm: confirmReducer,
   },
 });
 

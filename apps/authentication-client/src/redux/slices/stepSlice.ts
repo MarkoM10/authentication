@@ -1,4 +1,3 @@
-import { step } from '@material-tailwind/react';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface IStep {
