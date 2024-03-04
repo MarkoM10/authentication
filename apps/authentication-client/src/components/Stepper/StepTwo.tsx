@@ -1,56 +1,76 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { decrementStep, incrementStep } from '../../redux/slices/stepSlice';
 import {
   ClipboardDocumentCheckIcon,
   PresentationChartBarIcon,
   WalletIcon,
 } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { updateStepTwoData } from '../../redux/slices/formDataSlice';
+import { RootState } from '../../redux/store';
 
 const StepTwo = () => {
   const dispatch = useDispatch();
-  const [toggleValue, setToggleValue] = useState('m');
-  const [planValues, setPlanValues] = useState({
-    starterPrice: '29$',
-    advancedPrice: '99$',
-    proPrice: '129$',
+
+  const [twoData, setTwoData] = useState({
+    plan: '',
+    starterPlanPrice: '29$',
+    advancedPlanPrice: '59$',
+    proPlanPrice: '109$',
     freeMonths: '',
+    subscription: 'monthly',
   });
 
+  const {
+    plan,
+    freeMonths,
+    subscription,
+    starterPlanPrice,
+    advancedPlanPrice,
+    proPlanPrice,
+  } = twoData;
+
+  const { stepTwoData } = useSelector((state: RootState) => state.formData);
+
+  useEffect(() => {
+    setTwoData(stepTwoData);
+  }, []);
+
+  const handlePlanSelection = (planName: string) => {
+    setTwoData({ ...twoData, plan: planName });
+  };
+
   const handleToggle = () => {
-    setToggleValue(toggleValue === 'm' ? 'y' : 'm');
-    toggleValue === 'm'
-      ? setPlanValues({
-          ...planValues,
-          starterPrice: '90$',
-          advancedPrice: '160$',
-          proPrice: '200$',
-          freeMonths: '2 months free',
-        })
-      : setPlanValues({
-          starterPrice: '29$',
-          advancedPrice: '99$',
-          proPrice: '129$',
-          freeMonths: '',
-        });
-  };
-  const [selectedDiv, setSelectedDiv] = useState('');
+    const updatedSubscription =
+      subscription === 'monthly' ? 'yearly' : 'monthly';
+    const updatedTwoData = {
+      ...twoData,
+      subscription: updatedSubscription,
+    };
 
-  const handleDivClick = (index: string) => {
-    setSelectedDiv(index);
-  };
+    if (updatedSubscription === 'yearly') {
+      updatedTwoData.starterPlanPrice = '49$';
+      updatedTwoData.advancedPlanPrice = '89$';
+      updatedTwoData.proPlanPrice = '149$';
+      updatedTwoData.freeMonths = '2 months free';
+    } else {
+      updatedTwoData.starterPlanPrice = '29$';
+      updatedTwoData.advancedPlanPrice = '59$';
+      updatedTwoData.proPlanPrice = '109$';
+      updatedTwoData.freeMonths = '';
+    }
 
-  console.log(selectedDiv);
+    setTwoData(updatedTwoData);
+  };
 
   const handleNext = () => {
-    if (selectedDiv === '' || selectedDiv === 'invalid') {
-      setSelectedDiv('invalid');
+    if (plan === '' || plan === 'invalid') {
+      setTwoData({ ...twoData, plan: 'invalid' });
     } else {
+      dispatch(updateStepTwoData(twoData));
       dispatch(incrementStep());
     }
   };
-
-  const { starterPrice, advancedPrice, proPrice, freeMonths } = planValues;
 
   return (
     <div className="col-span-3 flex justify-center">
@@ -66,9 +86,13 @@ const StepTwo = () => {
         <div className="mt-5 w-full lg:grid lg:grid-cols-3 gap-4 ">
           <div
             className={`sm:gap-4 xl:gap-6 rounded-lg cursor-pointer ${
-              selectedDiv === 'invalid' && 'border border-red-500'
-            }  ${selectedDiv === 'starter' ? 'border border-main-blue' : ''}`}
-            onClick={() => handleDivClick('starter')}
+              plan === 'invalid' && 'border border-red-500'
+            }  ${
+              plan === 'starter' || plan === 'starter'
+                ? 'border border-main-blue'
+                : ''
+            }`}
+            onClick={() => handlePlanSelection('starter')}
           >
             <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
               <div className="flex flex-col items-baseline h-full justify-between">
@@ -78,7 +102,7 @@ const StepTwo = () => {
                     Starter
                   </label>
                   <span className="mr-2 font-extrabold text-sm">
-                    {starterPrice}
+                    {starterPlanPrice}
                     <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
                       /month
                     </span>
@@ -90,9 +114,9 @@ const StepTwo = () => {
           </div>
           <div
             className={`sm:gap-4 xl:gap-6 rounded-lg cursor-pointer ${
-              selectedDiv === 'invalid' && 'border border-red-500'
-            } ${selectedDiv === 'advanced' ? 'border border-main-blue' : ''}`}
-            onClick={() => handleDivClick('advanced')}
+              plan === 'invalid' && 'border border-red-500'
+            } ${plan === 'advanced' ? 'border border-main-blue' : ''}`}
+            onClick={() => handlePlanSelection('advanced')}
           >
             <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
               <div className="flex flex-col items-baseline h-full justify-between">
@@ -102,7 +126,7 @@ const StepTwo = () => {
                     Advanced
                   </label>
                   <span className="mr-2 font-extrabold text-sm">
-                    {advancedPrice}
+                    {advancedPlanPrice}
                     <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
                       /month
                     </span>
@@ -114,9 +138,9 @@ const StepTwo = () => {
           </div>
           <div
             className={`sm:gap-4 xl:gap-6 cursor-pointer rounded-lg ${
-              selectedDiv === 'invalid' && 'border border-red-500'
-            } ${selectedDiv === 'pro' ? 'border border-main-blue' : ''}`}
-            onClick={() => handleDivClick('pro')}
+              plan === 'invalid' && 'border border-red-500'
+            } ${plan === 'pro' ? 'border border-main-blue' : ''}`}
+            onClick={() => handlePlanSelection('pro')}
           >
             <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue  text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
               <div className="flex flex-col items-baseline h-full justify-between">
@@ -124,7 +148,7 @@ const StepTwo = () => {
                 <div className="flex flex-col">
                   <label className="font-extrabold cursor-pointer">Pro</label>
                   <span className="mr-2 font-extrabold text-sm">
-                    {proPrice}
+                    {proPlanPrice}
                     <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
                       /month
                     </span>
@@ -139,9 +163,8 @@ const StepTwo = () => {
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
-              value=""
               className="sr-only peer"
-              checked={toggleValue === 'y'}
+              checked={subscription === 'yearly' ? true : false}
               onChange={handleToggle}
             />
             <span className="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">

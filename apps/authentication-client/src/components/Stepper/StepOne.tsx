@@ -1,10 +1,14 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { incrementStep } from '../../redux/slices/stepSlice';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { validateName, validatePhoneNumber } from '../../utils/validation';
+import { updateStepOneData } from '../../redux/slices/formDataSlice';
+import { RootState } from '../../redux/store';
 
 const StepOne = () => {
   const dispatch = useDispatch();
+  //Step one data from session storage
+  const { stepOneData } = useSelector((state: RootState) => state.formData);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -12,16 +16,17 @@ const StepOne = () => {
     address: '',
   });
 
+  //Setting user input data from session storage to current form data, then use that data as values of input fields (to keep previously entered input data shown between step navigation)
+  useEffect(() => {
+    setFormData(stepOneData);
+  }, []);
+
+  const { name, phoneNumber, address } = formData;
+
   const [errors, setErrors] = useState<any>({
     nameErr: '',
     phoneNumberErr: '',
     addressErr: '',
-  });
-
-  const [validationState, setValidationState] = useState({
-    name: false,
-    phoneNumber: false,
-    address: false,
   });
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,42 +37,40 @@ const StepOne = () => {
     switch (name) {
       case 'name':
         isValid = validateName(value);
-        errorMessage = isValid ? '' : 'Name is not in valid format.';
+        errorMessage = isValid ? '' : 'Name is not in a valid format.';
         break;
       case 'phoneNumber':
         isValid = validatePhoneNumber(value);
-        errorMessage = isValid ? '' : 'Phone number is not in valid format.';
+        errorMessage = isValid ? '' : 'Phone number is not in a valid format.';
         break;
       case 'address':
         errorMessage = value ? '' : 'Address should not be empty.';
         break;
     }
-    setValidationState({ ...validationState, [name]: isValid });
     setErrors({ ...errors, [`${name}Err`]: errorMessage });
     setFormData({ ...formData, [name]: value });
   };
 
   const validation = () => {
-    const { name, phoneNumber, address } = validationState;
+    const { name, phoneNumber, address } = formData;
+    const nameIsValid = validateName(name);
+    const phoneNumberIsValid = validatePhoneNumber(phoneNumber);
+    const addressIsValid = address.trim() !== '';
+
     setErrors({
-      nameErr: name ? '' : 'Name is not in a valid format.',
-      phoneNumberErr: phoneNumber
+      nameErr: nameIsValid ? '' : 'Name is not in a valid format.',
+      phoneNumberErr: phoneNumberIsValid
         ? ''
         : 'Phone number is not in a valid format.',
-      addressErr: address ? '' : 'Address should not be empty.',
+      addressErr: addressIsValid ? '' : 'Address should not be empty.',
     });
 
-    if (name && phoneNumber && address) {
-      return true;
-    } else {
-      return false;
-    }
+    return nameIsValid && phoneNumberIsValid && addressIsValid;
   };
-
   const handleNextStep = () => {
     const isValid = validation();
-    console.log(isValid);
     if (isValid) {
+      dispatch(updateStepOneData(formData));
       dispatch(incrementStep());
     }
   };
@@ -106,6 +109,7 @@ const StepOne = () => {
                   className={`block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
                     nameErr ? 'border  border-red-500 focus:ring-red-500' : ''
                   }`}
+                  value={name}
                   onChange={(e) => handleOnChange(e)}
                 />
               </div>
@@ -138,6 +142,7 @@ const StepOne = () => {
                       ? 'border  border-red-500 focus:ring-red-500'
                       : ''
                   }`}
+                  value={phoneNumber}
                   onChange={(e) => handleOnChange(e)}
                 />
               </div>
@@ -170,6 +175,7 @@ const StepOne = () => {
                       ? 'border  border-red-500 focus:ring-red-500'
                       : ''
                   }`}
+                  value={address}
                   onChange={(e) => handleOnChange(e)}
                 />
               </div>

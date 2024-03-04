@@ -56,7 +56,7 @@ const StepThree = () => {
               </div>
             </div>
             <div className="mr-6">
-              <label className="text-white font-bold">+1$/mo</label>
+              <label className="text-white font-bold">+3$/mo</label>
             </div>
           </div>
           <div
@@ -83,7 +83,7 @@ const StepThree = () => {
               </div>
             </div>
             <div className="mr-6">
-              <label className="text-white font-bold">+1$/mo</label>
+              <label className="text-white font-bold">+5$/mo</label>
             </div>
           </div>
           <div

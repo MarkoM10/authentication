@@ -5,7 +5,7 @@ interface IStep {
 }
 
 const initialState: IStep = {
-  step: 1,
+  step: 2,
 };
 
 export const stepSlice = createSlice({

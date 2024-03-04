@@ -9,7 +9,6 @@ import {
 
 const ProgressBar = () => {
   const { step } = useSelector((state: RootState) => state.step);
-  console.log(step);
 
   const steps = [
     {
