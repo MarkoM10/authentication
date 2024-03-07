@@ -11,6 +11,9 @@ const StepFour = () => {
   };
 
   const { showConfirm } = useSelector((state: RootState) => state.confirm);
+  const { formData } = useSelector((state: RootState) => state);
+
+  console.log(formData);
 
   return (
     <div className="col-span-3 flex justify-center">

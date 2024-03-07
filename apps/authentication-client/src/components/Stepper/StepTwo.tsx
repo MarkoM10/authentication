@@ -10,64 +10,77 @@ import { updateStepTwoData } from '../../redux/slices/formDataSlice';
 import { RootState } from '../../redux/store';
 
 const StepTwo = () => {
+  interface IPLan {
+    id: number;
+    planName: string;
+    planSubscription: string;
+    freeMonths: string;
+    icon: any;
+    planPrice: number;
+  }
+
   const dispatch = useDispatch();
-
-  const [twoData, setTwoData] = useState({
-    plan: '',
-    starterPlanPrice: '29$',
-    advancedPlanPrice: '59$',
-    proPlanPrice: '109$',
-    freeMonths: '',
-    subscription: 'monthly',
-  });
-
-  const {
-    plan,
-    freeMonths,
-    subscription,
-    starterPlanPrice,
-    advancedPlanPrice,
-    proPlanPrice,
-  } = twoData;
-
   const { stepTwoData } = useSelector((state: RootState) => state.formData);
 
+  const [subscriptionType, setSubscriptionType] = useState('monthly');
+  const [chosenPlans, setChosenPlans] = useState<IPLan[]>([]);
+  const handleToggle = (checked: boolean) => {
+    if (checked) {
+      setSubscriptionType('yearly');
+    } else {
+      setSubscriptionType('monthly');
+    }
+  };
+
   useEffect(() => {
-    setTwoData(stepTwoData);
+    setChosenPlans(stepTwoData);
   }, []);
 
-  const handlePlanSelection = (planName: string) => {
-    setTwoData({ ...twoData, plan: planName });
+  const planArray: IPLan[] = [
+    {
+      id: 1,
+      planName: 'Starter',
+      planSubscription: subscriptionType === 'yearly' ? 'year' : 'month',
+      freeMonths: subscriptionType === 'yearly' ? '2 months free' : '',
+      icon: <PresentationChartBarIcon className="h-12 w-12 text-main-blue" />,
+      planPrice: subscriptionType === 'yearly' ? 59 : 39,
+    },
+    {
+      id: 2,
+      planName: 'Advanced',
+      planSubscription: subscriptionType === 'yearly' ? 'year' : 'month',
+      freeMonths: subscriptionType === 'yearly' ? '2 months free' : '',
+      icon: <WalletIcon className="h-12 w-12 text-main-blue" />,
+      planPrice: subscriptionType === 'yearly' ? 99 : 79,
+    },
+    {
+      id: 3,
+      planName: 'Pro',
+      planSubscription: subscriptionType === 'yearly' ? 'year' : 'month',
+      freeMonths: subscriptionType === 'yearly' ? '2 months free' : '',
+      icon: <ClipboardDocumentCheckIcon className="h-12 w-12 text-main-blue" />,
+      planPrice: subscriptionType === 'yearly' ? 159 : 109,
+    },
+  ];
+
+  const handlePlan = (event: React.MouseEvent<HTMLElement>, plan: IPLan) => {
+    setChosenPlans((prevPlans) => {
+      const isClicked = prevPlans.some(
+        (clickedPlan) => clickedPlan.id === plan.id
+      );
+      if (!isClicked) {
+        return [plan];
+      } else {
+        return prevPlans.filter((clickedPlan) => clickedPlan.id !== plan.id);
+      }
+    });
   };
 
-  const handleToggle = () => {
-    const updatedSubscription =
-      subscription === 'monthly' ? 'yearly' : 'monthly';
-    const updatedTwoData = {
-      ...twoData,
-      subscription: updatedSubscription,
-    };
-
-    if (updatedSubscription === 'yearly') {
-      updatedTwoData.starterPlanPrice = '49$';
-      updatedTwoData.advancedPlanPrice = '89$';
-      updatedTwoData.proPlanPrice = '149$';
-      updatedTwoData.freeMonths = '2 months free';
-    } else {
-      updatedTwoData.starterPlanPrice = '29$';
-      updatedTwoData.advancedPlanPrice = '59$';
-      updatedTwoData.proPlanPrice = '109$';
-      updatedTwoData.freeMonths = '';
-    }
-
-    setTwoData(updatedTwoData);
-  };
+  const isPlanChosen = chosenPlans.length > 0;
 
   const handleNext = () => {
-    if (plan === '' || plan === 'invalid') {
-      setTwoData({ ...twoData, plan: 'invalid' });
-    } else {
-      dispatch(updateStepTwoData(twoData));
+    if (isPlanChosen) {
+      dispatch(updateStepTwoData(chosenPlans));
       dispatch(incrementStep());
     }
   };
@@ -84,88 +97,40 @@ const StepTwo = () => {
           </p>
         </div>
         <div className="mt-5 w-full lg:grid lg:grid-cols-3 gap-4 ">
-          <div
-            className={`sm:gap-4 xl:gap-6 rounded-lg cursor-pointer ${
-              plan === 'invalid' && 'border border-red-500'
-            }  ${
-              plan === 'starter' || plan === 'starter'
-                ? 'border border-main-blue'
-                : ''
-            }`}
-            onClick={() => handlePlanSelection('starter')}
-          >
-            <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-              <div className="flex flex-col items-baseline h-full justify-between">
-                <PresentationChartBarIcon className="h-12 w-12 text-main-blue" />
-                <div className="flex flex-col">
-                  <label className="font-extrabold cursor-pointer">
-                    Starter
-                  </label>
-                  <span className="mr-2 font-extrabold text-sm">
-                    {starterPlanPrice}
-                    <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
-                      /month
+          {planArray.map((el) => (
+            <div
+              key={el.id}
+              className={`sm:gap-4 xl:gap-6 rounded-lg cursor-pointer ${
+                !isPlanChosen && '!border !border-red-500'
+              }`}
+              onClick={(event) => handlePlan(event, el)}
+            >
+              <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                <div className="flex flex-col items-baseline h-full justify-between">
+                  {el.icon}
+                  <div className="flex flex-col">
+                    <label className="font-extrabold cursor-pointer">
+                      {el.planName}
+                    </label>
+                    <span className="mr-2 font-extrabold text-sm">
+                      {el.planPrice}$
+                      <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
+                        /{el.planSubscription}
+                      </span>
                     </span>
-                  </span>
-                  <label className="text-sm">{freeMonths}</label>
+                    <label className="text-sm">{el.freeMonths}</label>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            className={`sm:gap-4 xl:gap-6 rounded-lg cursor-pointer ${
-              plan === 'invalid' && 'border border-red-500'
-            } ${plan === 'advanced' ? 'border border-main-blue' : ''}`}
-            onClick={() => handlePlanSelection('advanced')}
-          >
-            <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-              <div className="flex flex-col items-baseline h-full justify-between">
-                <WalletIcon className="h-12 w-12 text-main-blue" />
-                <div className="flex flex-col">
-                  <label className="font-extrabold cursor-pointer">
-                    Advanced
-                  </label>
-                  <span className="mr-2 font-extrabold text-sm">
-                    {advancedPlanPrice}
-                    <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
-                      /month
-                    </span>
-                  </span>
-                  <label className="text-sm">{freeMonths}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`sm:gap-4 xl:gap-6 cursor-pointer rounded-lg ${
-              plan === 'invalid' && 'border border-red-500'
-            } ${plan === 'pro' ? 'border border-main-blue' : ''}`}
-            onClick={() => handlePlanSelection('pro')}
-          >
-            <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue  text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-              <div className="flex flex-col items-baseline h-full justify-between">
-                <ClipboardDocumentCheckIcon className="h-12 w-12 text-main-blue" />
-                <div className="flex flex-col">
-                  <label className="font-extrabold cursor-pointer">Pro</label>
-                  <span className="mr-2 font-extrabold text-sm">
-                    {proPlanPrice}
-                    <span className="text-gray-500 font-normal dark:text-gray-400 text-sm">
-                      /month
-                    </span>
-                  </span>
-                  <label className="text-sm">{freeMonths}</label>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
         <div className="h-16 bg-regal-blue w-full rounded-lg mt-5 flex justify-center align-center">
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               className="sr-only peer"
-              checked={subscription === 'yearly' ? true : false}
-              onChange={handleToggle}
+              onChange={(event) => handleToggle(event.target.checked)}
             />
             <span className="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">
               Monthly

@@ -6,14 +6,8 @@ interface IFormData {
     phoneNumber: string;
     address: string;
   };
-  stepTwoData: {
-    plan: string;
-    starterPlanPrice: string;
-    advancedPlanPrice: string;
-    proPlanPrice: string;
-    freeMonths: string;
-    subscription: string;
-  };
+  stepTwoData: any;
+  stepThreeData: any;
 }
 
 const initialState: IFormData = {
@@ -22,14 +16,8 @@ const initialState: IFormData = {
     phoneNumber: '',
     address: '',
   },
-  stepTwoData: {
-    plan: '',
-    starterPlanPrice: '29$',
-    advancedPlanPrice: '59$',
-    proPlanPrice: '109$',
-    freeMonths: '',
-    subscription: 'monthly',
-  },
+  stepTwoData: [],
+  stepThreeData: [],
 };
 
 export const formDataSlice = createSlice({
@@ -48,14 +36,18 @@ export const formDataSlice = createSlice({
     updateStepTwoData: (state, action) => {
       return {
         ...state,
-        stepTwoData: {
-          ...state.stepTwoData,
-          ...action.payload,
-        },
+        stepTwoData: action.payload,
+      };
+    },
+    updateStepThreeData: (state, action) => {
+      return {
+        ...state,
+        stepThreeData: action.payload,
       };
     },
   },
 });
 
-export const { updateStepOneData, updateStepTwoData } = formDataSlice.actions;
+export const { updateStepOneData, updateStepTwoData, updateStepThreeData } =
+  formDataSlice.actions;
 export const formDataReducer = formDataSlice.reducer;

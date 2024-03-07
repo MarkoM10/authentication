@@ -1,22 +1,88 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { decrementStep, incrementStep } from '../../redux/slices/stepSlice';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { RootState } from '../../redux/store';
+import { updateStepThreeData } from '../../redux/slices/formDataSlice';
 
 const StepThree = () => {
   const dispatch = useDispatch();
 
-  const [checkboxesValid, setCheckboxesValid] = useState('');
+  const { stepTwoData } = useSelector((state: RootState) => state.formData);
 
-  const handleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
-    const { checked } = e.target;
-    checked ? setCheckboxesValid('valid') : setCheckboxesValid('invalid');
+  const [selectedAddons, setSelectedAddons] = useState<any>([]);
+  const { stepThreeData } = useSelector((state: RootState) => state.formData);
+
+  useEffect(() => {
+    setSelectedAddons(stepThreeData);
+  }, []);
+
+  const { subscription } = stepTwoData;
+
+  interface Addon {
+    id: number;
+    label: string;
+    p: string;
+    type: string;
+    value: string;
+    name: string;
+    price: number;
+  }
+
+  const addonsArray: Addon[] = [
+    {
+      id: 1,
+      label: 'Online Service',
+      p: 'Access to multiplayer games',
+      type: 'checkbox',
+      value: 'service',
+      name: 'serviceInput',
+      price: subscription === 'monthly' ? 3 : 10,
+    },
+    {
+      id: 2,
+      label: 'Larger storage',
+      p: 'Extra 1tb of cloud save',
+      type: 'checkbox',
+      value: 'storage',
+      name: 'storageInput',
+      price: subscription === 'monthly' ? 10 : 20,
+    },
+    {
+      id: 3,
+      label: 'Customizable profile',
+      p: 'Custom theme on your profile',
+      type: 'checkbox',
+      value: 'profile',
+      name: 'profileInput',
+      price: subscription === 'monthly' ? 15 : 35,
+    },
+  ];
+
+  const handleCheckboxChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    addon: Addon
+  ) => {
+    const isChecked = event.target.checked;
+
+    console.log(addon);
+    if (isChecked) {
+      setSelectedAddons([
+        ...selectedAddons,
+        { label: addon.label, price: addon.price },
+      ]);
+    } else {
+      setSelectedAddons(
+        selectedAddons.filter((item: any) => item.label !== addon.label)
+      );
+    }
   };
 
+  const isAnyCheckboxChecked = selectedAddons.length > 0;
+
   const handleNext = () => {
-    if (checkboxesValid === 'valid') {
+    if (isAnyCheckboxChecked) {
+      dispatch(updateStepThreeData(selectedAddons));
       dispatch(incrementStep());
-    } else {
-      setCheckboxesValid('invalid');
     }
   };
 
@@ -32,87 +98,46 @@ const StepThree = () => {
           </p>
         </div>
         <div className="mt-5 flex flex-col gap-4">
-          <div
-            className={`h-20 flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 justify-between ${
-              checkboxesValid === 'invalid' && 'border !border-red-500'
-            }`}
-          >
-            <div className="ml-6 flex items-center gap-2 ">
-              <input
-                id="bordered-checkbox-1"
-                type="checkbox"
-                value="service"
-                name="bordered-checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                onChange={(e) => handleCheckbox(e)}
-              />
-              <div className="ml-2 flex flex-col justify-center">
+          {addonsArray.map((el) => (
+            <div
+              key={el.id}
+              className={`h-20 border border-gray-200 rounded dark:border-gray-700 ${
+                !isAnyCheckboxChecked && '!border !border-red-500'
+              }`}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '0.25fr 0.5fr 0.25fr',
+                paddingLeft: '2rem',
+                alignItems: 'center',
+              }}
+            >
+              <div className="flex items-center gap-2 ">
+                <input
+                  type={el.type}
+                  value={el.value}
+                  name={el.name}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  checked={selectedAddons.some(
+                    (item: any) => item.label === el.label
+                  )}
+                  onChange={(event) => handleCheckboxChange(event, el)}
+                />
+              </div>
+              <div className="flex flex-col justify-center">
                 <label className="w-full font-medium text-gray-900 dark:text-gray-300">
-                  Online service
+                  {el.label}
                 </label>
                 <label className="text-sm font-medium text-slate-500">
-                  Access to multiplayer games
+                  {el.p}
+                </label>
+              </div>
+              <div className="">
+                <label className="text-white font-bold">
+                  +{el.price}$/{subscription === 'yearly' ? 'y' : 'mo'}
                 </label>
               </div>
             </div>
-            <div className="mr-6">
-              <label className="text-white font-bold">+3$/mo</label>
-            </div>
-          </div>
-          <div
-            className={`h-20 flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 justify-between ${
-              checkboxesValid === 'invalid' && 'border !border-red-500'
-            }`}
-          >
-            <div className="ml-6 flex items-center gap-2">
-              <input
-                id="bordered-checkbox-1"
-                type="checkbox"
-                value="storage"
-                name="bordered-checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                onChange={(e) => handleCheckbox(e)}
-              />
-              <div className="ml-2 flex flex-col justify-center">
-                <label className="w-full font-medium text-gray-900 dark:text-gray-300">
-                  Larger storage
-                </label>
-                <label className="text-sm font-medium text-slate-500">
-                  Extra 1tb of cloud save
-                </label>
-              </div>
-            </div>
-            <div className="mr-6">
-              <label className="text-white font-bold">+5$/mo</label>
-            </div>
-          </div>
-          <div
-            className={`h-20 flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 justify-between ${
-              checkboxesValid === 'invalid' && 'border !border-red-500'
-            }`}
-          >
-            <div className="ml-6 flex items-center gap-2">
-              <input
-                id="bordered-checkbox-1"
-                type="checkbox"
-                value="profile"
-                name="bordered-checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                onChange={(e) => handleCheckbox(e)}
-              />
-              <div className="ml-2 flex flex-col justify-center">
-                <label className="w-full font-medium text-gray-900 dark:text-gray-300">
-                  Customizable profile
-                </label>
-                <label className="text-sm font-medium text-slate-500">
-                  Custom theme on your profile
-                </label>
-              </div>
-            </div>
-            <div className="mr-6">
-              <label className="text-white font-bold">+1$/mo</label>
-            </div>
-          </div>
+          ))}
         </div>
         <div className="absolute bottom-0 left-0">
           <button
