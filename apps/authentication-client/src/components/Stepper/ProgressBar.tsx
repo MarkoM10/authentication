@@ -15,48 +15,48 @@ const ProgressBar = () => {
       title: 'Personal Info',
       description: 'Step details here',
       step: 1,
-      stepActive: step === 1 ? '#386150' : 'gray',
+      stepActive: step === 1 ? '#0f7234' : 'gray',
       icon: <UserIcon className="h-4 w-4 text-gray-300" />,
     },
     {
       title: 'Account Info',
       description: 'Second step details here',
       step: 2,
-      stepActive: step === 2 ? '#386150' : 'gray',
+      stepActive: step === 2 ? '#0f7234' : 'gray',
       icon: <IdentificationIcon className="h-4 w-4 text-gray-300" />,
     },
     {
       title: 'Review',
       description: 'Third step details here',
       step: 3,
-      stepActive: step === 3 ? '#386150' : 'gray',
+      stepActive: step === 3 ? '#0f7234' : 'gray',
       icon: <ClipboardDocumentListIcon className="h-4 w-4 text-gray-300" />,
     },
     {
       title: 'Confirmation',
       description: 'Fourth step details here',
       step: 4,
-      stepActive: step === 4 ? '#386150' : 'gray',
+      stepActive: step === 4 ? '#0f7234' : 'gray',
       icon: <CheckBadgeIcon className="h-4 w-4 text-gray-300" />,
     },
   ];
 
   return (
-    <div className="col-span-1 bg-regal-blue pt-5 rounded-xl flex justify-center">
-      <ol className="relative text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
+    <div className="col-span-1 sm:bg-regal-blue pt-5 rounded-xl flex justify-center absolute lg:relative top-12 lg:top-0 left-0 w-full">
+      <ol className="relative flex justify-evenly items-center lg:block text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
         {steps.map((stepInfo, index) => (
-          <li key={index} className="mb-10 ms-6 relative">
+          <li key={index} className="mb-10 ms-6 px-3 relative">
             <span
               style={{ backgroundColor: stepInfo.stepActive }}
-              className="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -start-4 ring-4 ring-red dark:ring-gray-900"
+              className="absolute flex items-center justify-center w-11 h-11 lg:w-8 lg:h-8 bg-green-200 rounded-full -start-4 ring-4 ring-red dark:ring-gray-900"
             >
               {stepInfo.icon}
             </span>
-            <div className="ml-12">
-              <h3 className="font-medium leading-tight text-white">
+            <div className="ml-12 w-full sm:w-full flex justify-center sm:block">
+              <h3 className="font-medium leading-tight text-white max-sm:hidden">
                 {stepInfo.title}
               </h3>
-              <p className="text-sm">{stepInfo.description}</p>
+              <p className="text-sm max-sm:hidden">{stepInfo.description}</p>
             </div>
           </li>
         ))}

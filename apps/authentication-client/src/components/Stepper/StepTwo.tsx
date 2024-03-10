@@ -5,22 +5,22 @@ import {
   PresentationChartBarIcon,
   WalletIcon,
 } from '@heroicons/react/24/solid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { updateStepTwoData } from '../../redux/slices/formDataSlice';
-import { RootState } from '../../redux/store';
 
 const StepTwo = () => {
   interface IPLan {
     id: number;
     planName: string;
+    subscriptionType: boolean;
     planSubscription: string;
     freeMonths: string;
     icon: any;
     planPrice: number;
+    clickedStyle: string;
   }
 
   const dispatch = useDispatch();
-  const { stepTwoData } = useSelector((state: RootState) => state.formData);
 
   const [subscriptionType, setSubscriptionType] = useState('monthly');
   const [chosenPlans, setChosenPlans] = useState<IPLan[]>([]);
@@ -32,38 +32,47 @@ const StepTwo = () => {
     }
   };
 
-  useEffect(() => {
-    setChosenPlans(stepTwoData);
-  }, []);
-
   const planArray: IPLan[] = [
     {
       id: 1,
       planName: 'Starter',
+      subscriptionType: subscriptionType === 'yearly' ? true : false,
       planSubscription: subscriptionType === 'yearly' ? 'year' : 'month',
       freeMonths: subscriptionType === 'yearly' ? '2 months free' : '',
       icon: <PresentationChartBarIcon className="h-12 w-12 text-main-blue" />,
       planPrice: subscriptionType === 'yearly' ? 59 : 39,
+      clickedStyle: chosenPlans.some((plan) => plan.id === 1)
+        ? 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-main-blue'
+        : 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-slate-500 hover:border-main-blue',
     },
     {
       id: 2,
       planName: 'Advanced',
+      subscriptionType: subscriptionType === 'yearly' ? true : false,
       planSubscription: subscriptionType === 'yearly' ? 'year' : 'month',
       freeMonths: subscriptionType === 'yearly' ? '2 months free' : '',
       icon: <WalletIcon className="h-12 w-12 text-main-blue" />,
       planPrice: subscriptionType === 'yearly' ? 99 : 79,
+      clickedStyle: chosenPlans.some((plan) => plan.id === 2)
+        ? 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-main-blue'
+        : 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-slate-500 hover:border-main-blue',
     },
     {
       id: 3,
       planName: 'Pro',
+      subscriptionType: subscriptionType === 'yearly' ? true : false,
       planSubscription: subscriptionType === 'yearly' ? 'year' : 'month',
       freeMonths: subscriptionType === 'yearly' ? '2 months free' : '',
       icon: <ClipboardDocumentCheckIcon className="h-12 w-12 text-main-blue" />,
       planPrice: subscriptionType === 'yearly' ? 159 : 109,
+      clickedStyle: chosenPlans.some((plan) => plan.id === 3)
+        ? 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-main-blue'
+        : 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-slate-500 hover:border-main-blue',
     },
   ];
 
-  const handlePlan = (event: React.MouseEvent<HTMLElement>, plan: IPLan) => {
+  const handlePlan = (plan: IPLan) => {
+    console.log(plan);
     setChosenPlans((prevPlans) => {
       const isClicked = prevPlans.some(
         (clickedPlan) => clickedPlan.id === plan.id
@@ -87,7 +96,7 @@ const StepTwo = () => {
 
   return (
     <div className="col-span-3 flex justify-center">
-      <div className="relative w-3/4">
+      <div className="sm:relative sm:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Select your plan
@@ -96,19 +105,17 @@ const StepTwo = () => {
             You have the option of monthly or yearly billing.
           </p>
         </div>
-        <div className="mt-5 w-full lg:grid lg:grid-cols-3 gap-4 ">
+        <div className="mt-5 w-full flex flex-col lg:grid lg:grid-cols-3 gap-4 ">
           {planArray.map((el) => (
             <div
               key={el.id}
-              className={`sm:gap-4 xl:gap-6 rounded-lg cursor-pointer ${
-                !isPlanChosen && '!border !border-red-500'
-              }`}
-              onClick={(event) => handlePlan(event, el)}
+              className={el.clickedStyle}
+              onClick={() => handlePlan(el)}
             >
-              <div className="flex flex-col h-48 p-4 max-w-lg hover:border-main-blue text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                <div className="flex flex-col items-baseline h-full justify-between">
+              <div className="flex flex-col h-24 lg:h-48 p-4 max-w-lg text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                <div className="flex sm:flex-col items-center sm:items-baseline h-full sm:justify-between">
                   {el.icon}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col ml-4">
                     <label className="font-extrabold cursor-pointer">
                       {el.planName}
                     </label>
@@ -131,6 +138,9 @@ const StepTwo = () => {
               type="checkbox"
               className="sr-only peer"
               onChange={(event) => handleToggle(event.target.checked)}
+              // checked={planArray.map((el) =>
+              //   el.subscriptionType ? true : false
+              // )}
             />
             <span className="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">
               Monthly
@@ -141,23 +151,25 @@ const StepTwo = () => {
             </span>
           </label>
         </div>
-        <div className="absolute bottom-0 left-0">
-          <button
-            type="button"
-            className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            onClick={() => dispatch(decrementStep())}
-          >
-            Go Back
-          </button>
-        </div>
-        <div className="absolute bottom-0 right-0">
-          <button
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            onClick={() => handleNext()}
-          >
-            Next Step
-          </button>
+        <div className="absolute flex justify-between bottom-0 left-0 w-full bg-regal-blue sm:bg-transparent py-4 pr-5 lg:py-0 lg:px-0">
+          <div className="pl-5">
+            <button
+              type="button"
+              className="py-2.5 px-5 me-2  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg  border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              onClick={() => dispatch(decrementStep())}
+            >
+              Go Back
+            </button>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              onClick={() => handleNext()}
+            >
+              Next Step
+            </button>
+          </div>
         </div>
       </div>
     </div>
