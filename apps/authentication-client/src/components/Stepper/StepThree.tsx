@@ -10,6 +10,7 @@ const StepThree = () => {
   const { stepTwoData } = useSelector((state: RootState) => state.formData);
 
   const [selectedAddons, setSelectedAddons] = useState<any>([]);
+  const [addonPicked, setAddonPicked] = useState('border border-gray-200');
 
   const subscription = stepTwoData[0].planSubscription;
 
@@ -60,6 +61,7 @@ const StepThree = () => {
     const isChecked = event.target.checked;
 
     if (isChecked) {
+      setAddonPicked('border border-gray-200');
       setSelectedAddons([
         ...selectedAddons,
         { label: addon.label, price: addon.price },
@@ -79,12 +81,14 @@ const StepThree = () => {
     if (isAnyCheckboxChecked) {
       dispatch(updateStepThreeData(selectedAddons));
       dispatch(incrementStep());
+    } else {
+      setAddonPicked('!border !border-red-500');
     }
   };
 
   return (
     <div className="col-span-3 flex justify-center">
-      <div className="sm:relative sm:w-3/4">
+      <div className="lg:relative lg:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Pick add-ons
@@ -97,9 +101,7 @@ const StepThree = () => {
           {addonsArray.map((el) => (
             <div
               key={el.id}
-              className={`flex justify-between px-4 items-center h-20 border border-gray-200 rounded dark:border-gray-700 ${
-                !isAnyCheckboxChecked && '!border !border-red-500'
-              }`}
+              className={`flex justify-between px-4 items-center h-20 border border-gray-200 rounded dark:border-gray-700 ${addonPicked}`}
             >
               <div className="flex items-center gap-2 ">
                 <input
@@ -129,8 +131,8 @@ const StepThree = () => {
             </div>
           ))}
         </div>
-        <div className="absolute flex justify-between bottom-0 left-0 w-full bg-regal-blue sm:bg-transparent py-4 pr-5 lg:py-0 lg:px-0">
-          <div className="pl-5">
+        <div className="absolute flex justify-between bottom-0 left-0 w-full bg-regal-blue lg:bg-transparent py-4 pr-5 lg:py-0 lg:px-0">
+          <div className="pl-5 lg:pl-0">
             <button
               type="button"
               className="py-2.5 px-5 me-2  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg  border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"

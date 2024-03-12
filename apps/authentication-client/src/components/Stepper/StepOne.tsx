@@ -78,8 +78,8 @@ const StepOne = () => {
   const { nameErr, phoneNumberErr, addressErr } = errors;
 
   return (
-    <div className="col-span-3 flex justify-center w-full">
-      <div className="sm:relative w-full sm:w-3/4">
+    <div className="col-span-3 flex justify-center w-full h-full">
+      <div className="lg:relative lg:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Personal Info
@@ -189,7 +189,7 @@ const StepOne = () => {
             </div>
           </form>
         </div>
-        <div className="bg-regal-blue sm:bg-transparent w-full flex items-center justify-end py-4 pr-5 lg:py-0 lg:px-0 sm:w-unset absolute bottom-0 right-0">
+        <div className="bg-regal-blue lg:bg-transparent w-full flex items-center justify-end py-4 pr-5 lg:py-0 lg:px-0 sm:w-unset absolute bottom-0 right-0">
           <button
             type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"

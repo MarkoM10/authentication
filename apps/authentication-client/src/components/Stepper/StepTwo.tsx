@@ -24,6 +24,8 @@ const StepTwo = () => {
 
   const [subscriptionType, setSubscriptionType] = useState('monthly');
   const [chosenPlans, setChosenPlans] = useState<IPLan[]>([]);
+  const [borderStyle, setBorderStyle] = useState('border-slate-500');
+
   const handleToggle = (checked: boolean) => {
     if (checked) {
       setSubscriptionType('yearly');
@@ -31,6 +33,8 @@ const StepTwo = () => {
       setSubscriptionType('monthly');
     }
   };
+
+  const isPlanChosen = chosenPlans.length > 0;
 
   const planArray: IPLan[] = [
     {
@@ -43,7 +47,7 @@ const StepTwo = () => {
       planPrice: subscriptionType === 'yearly' ? 59 : 39,
       clickedStyle: chosenPlans.some((plan) => plan.id === 1)
         ? 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-main-blue'
-        : 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-slate-500 hover:border-main-blue',
+        : `sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border hover:border-main-blue ${borderStyle}`,
     },
     {
       id: 2,
@@ -55,7 +59,7 @@ const StepTwo = () => {
       planPrice: subscriptionType === 'yearly' ? 99 : 79,
       clickedStyle: chosenPlans.some((plan) => plan.id === 2)
         ? 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-main-blue'
-        : 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-slate-500 hover:border-main-blue',
+        : `sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border hover:border-main-blue ${borderStyle}`,
     },
     {
       id: 3,
@@ -67,7 +71,7 @@ const StepTwo = () => {
       planPrice: subscriptionType === 'yearly' ? 159 : 109,
       clickedStyle: chosenPlans.some((plan) => plan.id === 3)
         ? 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-main-blue'
-        : 'sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border border-slate-500 hover:border-main-blue',
+        : `sm:gap-4 xl:gap-6 rounded-lg cursor-pointer border hover:border-main-blue ${borderStyle}`,
     },
   ];
 
@@ -78,6 +82,7 @@ const StepTwo = () => {
         (clickedPlan) => clickedPlan.id === plan.id
       );
       if (!isClicked) {
+        setBorderStyle('border-slate-500');
         return [plan];
       } else {
         return prevPlans.filter((clickedPlan) => clickedPlan.id !== plan.id);
@@ -85,18 +90,18 @@ const StepTwo = () => {
     });
   };
 
-  const isPlanChosen = chosenPlans.length > 0;
-
   const handleNext = () => {
     if (isPlanChosen) {
       dispatch(updateStepTwoData(chosenPlans));
       dispatch(incrementStep());
+    } else {
+      setBorderStyle('border-red-500');
     }
   };
 
   return (
     <div className="col-span-3 flex justify-center">
-      <div className="sm:relative sm:w-3/4">
+      <div className="lg:relative lg:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Select your plan
@@ -113,7 +118,7 @@ const StepTwo = () => {
               onClick={() => handlePlan(el)}
             >
               <div className="flex flex-col h-24 lg:h-48 p-4 max-w-lg text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                <div className="flex sm:flex-col items-center sm:items-baseline h-full sm:justify-between">
+                <div className="flex lg:flex-col items-center lg:items-baseline h-full lg:justify-between">
                   {el.icon}
                   <div className="flex flex-col ml-4">
                     <label className="font-extrabold cursor-pointer">
@@ -151,8 +156,8 @@ const StepTwo = () => {
             </span>
           </label>
         </div>
-        <div className="absolute flex justify-between bottom-0 left-0 w-full bg-regal-blue sm:bg-transparent py-4 pr-5 lg:py-0 lg:px-0">
-          <div className="pl-5">
+        <div className="absolute flex justify-between bottom-0 left-0 w-full bg-regal-blue lg:bg-transparent py-4 pr-5 lg:py-0 lg:px-0">
+          <div className="pl-5 lg:pl-0">
             <button
               type="button"
               className="py-2.5 px-5 me-2  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg  border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"

@@ -13,36 +13,40 @@ const ProgressBar = () => {
   const steps = [
     {
       title: 'Personal Info',
-      description: 'Step details here',
+      description: 'Enter personal data',
       step: 1,
       stepActive: step === 1 ? '#0f7234' : 'gray',
-      icon: <UserIcon className="h-4 w-4 text-gray-300" />,
+      icon: <UserIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />,
     },
     {
-      title: 'Account Info',
-      description: 'Second step details here',
+      title: 'Plan',
+      description: 'Choose your plan',
       step: 2,
       stepActive: step === 2 ? '#0f7234' : 'gray',
-      icon: <IdentificationIcon className="h-4 w-4 text-gray-300" />,
+      icon: (
+        <IdentificationIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />
+      ),
     },
     {
-      title: 'Review',
-      description: 'Third step details here',
+      title: 'Add-ons',
+      description: 'Pick add-ons',
       step: 3,
       stepActive: step === 3 ? '#0f7234' : 'gray',
-      icon: <ClipboardDocumentListIcon className="h-4 w-4 text-gray-300" />,
+      icon: (
+        <ClipboardDocumentListIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />
+      ),
     },
     {
       title: 'Confirmation',
-      description: 'Fourth step details here',
+      description: 'Confirm data',
       step: 4,
       stepActive: step === 4 ? '#0f7234' : 'gray',
-      icon: <CheckBadgeIcon className="h-4 w-4 text-gray-300" />,
+      icon: <CheckBadgeIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />,
     },
   ];
 
   return (
-    <div className="col-span-1 sm:bg-regal-blue pt-5 rounded-xl flex justify-center absolute lg:relative top-12 lg:top-0 left-0 w-full">
+    <div className="col-span-1 lg:bg-regal-blue pt-5 rounded-xl flex justify-center absolute lg:relative top-12 lg:top-0 left-0 w-full">
       <ol className="relative flex justify-evenly items-center lg:block text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
         {steps.map((stepInfo, index) => (
           <li key={index} className="mb-10 ms-6 px-3 relative">
@@ -53,10 +57,10 @@ const ProgressBar = () => {
               {stepInfo.icon}
             </span>
             <div className="ml-12 w-full sm:w-full flex justify-center sm:block">
-              <h3 className="font-medium leading-tight text-white max-sm:hidden">
+              <h3 className="font-medium leading-tight text-white max-lg:hidden">
                 {stepInfo.title}
               </h3>
-              <p className="text-sm max-sm:hidden">{stepInfo.description}</p>
+              <p className="text-sm max-lg:hidden">{stepInfo.description}</p>
             </div>
           </li>
         ))}
