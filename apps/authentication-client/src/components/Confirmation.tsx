@@ -3,7 +3,7 @@ import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 const Confirmation = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-4 ">
-      <CheckBadgeIcon color="#16A34A" className="h-20 w-20" />
+      <CheckBadgeIcon color="#387550" className="h-20 w-20" />
       <label className="font-extrabold text-white text-2xl">Thank you!</label>
       <p className="text-slate-500 text-center">
         Thanks for confirming your subscription! We hope you have fun using our

@@ -19,6 +19,9 @@ module.exports = {
         'gray-light': '#374151',
         'white-light': '#F7F7F2',
       },
+      backgroundImage: {
+        form: "url('./assets/images/formBgImg.jpg')",
+      },
     },
   },
   plugins: [],

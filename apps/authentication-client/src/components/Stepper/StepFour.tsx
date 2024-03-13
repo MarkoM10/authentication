@@ -11,12 +11,11 @@ const StepFour = () => {
   };
 
   const { showConfirm } = useSelector((state: RootState) => state.confirm);
-  const { formData } = useSelector((state: RootState) => state);
+  const { stepTwoData, stepThreeData } = useSelector(
+    (state: RootState) => state.formData
+  );
 
-  const { stepThreeData } = formData;
-  const { stepTwoData } = formData;
-
-  const subscriptionType = stepTwoData[0].subscriptionType;
+  const planSubscription = stepTwoData[0].planSubscription;
   const planName = stepTwoData[0].planName;
   const planPrice = stepTwoData[0].planPrice;
 
@@ -46,10 +45,13 @@ const StepFour = () => {
                 <div className="flex justify-between">
                   <label className="font-bold text-white">
                     {planName}
-                    <span> ({subscriptionType ? 'Year' : 'Month'})</span>
+                    <span>
+                      {' '}
+                      ({planSubscription === 'year' ? 'Year' : 'Month'})
+                    </span>
                   </label>
                   <label className="font-bold text-white">
-                    {planPrice}$/{subscriptionType ? 'y' : 'mo'}
+                    {planPrice}$/{planSubscription === 'year' ? 'y' : 'mo'}
                   </label>
                 </div>
                 <hr className="h-px my-6 bg-gray-200 border-0 dark:bg-gray-700" />
@@ -59,7 +61,8 @@ const StepFour = () => {
                       <div className="w-full flex justify-between" key={index}>
                         <label className="text-gray-300">{el.label}</label>
                         <label className="text-gray-300 font-semibold">
-                          +${el.price}/{subscriptionType ? 'y' : 'mo'}
+                          +${el.price}/
+                          {planSubscription === 'year' ? 'y' : 'mo'}
                         </label>
                       </div>
                     ))}
@@ -69,10 +72,13 @@ const StepFour = () => {
               <div className="lg:w-5/6 p-6 text-gray-300 flex justify-between items-center">
                 <label>
                   Total{' '}
-                  <span>{subscriptionType ? 'per year' : 'per month'}</span>
+                  <span>
+                    {planSubscription === 'year' ? 'per year' : 'per month'}
+                  </span>
                 </label>
                 <label className="text-xl font-extrabold text-white-light">
-                  +${totalPrice + planPrice}/{subscriptionType ? 'y' : 'mo'}
+                  +${totalPrice + planPrice}/
+                  {planSubscription === 'year' ? 'y' : 'mo'}
                 </label>
               </div>
             </div>

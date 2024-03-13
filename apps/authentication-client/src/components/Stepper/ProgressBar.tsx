@@ -15,14 +15,14 @@ const ProgressBar = () => {
       title: 'Personal Info',
       description: 'Enter personal data',
       step: 1,
-      stepActive: step === 1 ? '#0f7234' : 'gray',
+      stepActive: step === 1 ? '#387550' : '#1f2937',
       icon: <UserIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />,
     },
     {
       title: 'Plan',
       description: 'Choose your plan',
       step: 2,
-      stepActive: step === 2 ? '#0f7234' : 'gray',
+      stepActive: step === 2 ? '#387550' : '#1f2937',
       icon: (
         <IdentificationIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />
       ),
@@ -31,7 +31,7 @@ const ProgressBar = () => {
       title: 'Add-ons',
       description: 'Pick add-ons',
       step: 3,
-      stepActive: step === 3 ? '#0f7234' : 'gray',
+      stepActive: step === 3 ? '#387550' : '#1f2937',
       icon: (
         <ClipboardDocumentListIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />
       ),
@@ -40,7 +40,7 @@ const ProgressBar = () => {
       title: 'Confirmation',
       description: 'Confirm data',
       step: 4,
-      stepActive: step === 4 ? '#0f7234' : 'gray',
+      stepActive: step === 4 ? '#387550' : '#1f2937',
       icon: <CheckBadgeIcon className="h-6 w-6 sm:h-4 sm:w-4 text-gray-300" />,
     },
   ];

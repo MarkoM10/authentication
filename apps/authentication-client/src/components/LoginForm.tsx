@@ -3,7 +3,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useDispatch } from 'react-redux';
 import { setShowLogin } from '../redux/slices/loginSlice';
 import { validatePassword, validateUsername } from '../utils/validation';
-import heroImg from '../assets/images/hero.jpg';
+import logo from '../assets/images/logo.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setShowSpinner } from '../redux/slices/spinnerSlice';
@@ -131,8 +131,6 @@ const LoginForm = () => {
           );
         }, 5000);
       }
-    } else {
-      console.log('Data invalid for sending...');
     }
   };
 
@@ -142,11 +140,6 @@ const LoginForm = () => {
     <div className="w-11/12 sm:w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center justify-center">
         <div className="sm:mx-auto w-11/12 sm:w-full sm:max-w-sm m-5">
-          {/* <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        /> */}
           <h2 className="text-2xl font-bold leading-9 tracking-tight text-white">
             Login to your account
           </h2>

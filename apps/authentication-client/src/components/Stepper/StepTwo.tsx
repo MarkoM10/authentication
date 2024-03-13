@@ -5,7 +5,7 @@ import {
   PresentationChartBarIcon,
   WalletIcon,
 } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateStepTwoData } from '../../redux/slices/formDataSlice';
 
 const StepTwo = () => {
@@ -76,7 +76,6 @@ const StepTwo = () => {
   ];
 
   const handlePlan = (plan: IPLan) => {
-    console.log(plan);
     setChosenPlans((prevPlans) => {
       const isClicked = prevPlans.some(
         (clickedPlan) => clickedPlan.id === plan.id
@@ -92,6 +91,9 @@ const StepTwo = () => {
 
   const handleNext = () => {
     if (isPlanChosen) {
+      chosenPlans.map((el) => {
+        el.planSubscription = subscriptionType === 'yearly' ? 'year' : 'month';
+      });
       dispatch(updateStepTwoData(chosenPlans));
       dispatch(incrementStep());
     } else {

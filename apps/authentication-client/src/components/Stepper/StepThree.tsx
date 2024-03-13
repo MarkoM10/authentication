@@ -28,7 +28,7 @@ const StepThree = () => {
     {
       id: 1,
       label: 'Online Service',
-      p: 'Access to multiplayer games',
+      p: 'Extra access to online services',
       type: 'checkbox',
       value: 'service',
       name: 'serviceInput',
@@ -75,8 +75,6 @@ const StepThree = () => {
 
   const isAnyCheckboxChecked = selectedAddons.length > 0;
 
-  console.log(selectedAddons);
-
   const handleNext = () => {
     if (isAnyCheckboxChecked) {
       dispatch(updateStepThreeData(selectedAddons));
@@ -94,7 +92,7 @@ const StepThree = () => {
             Pick add-ons
           </label>
           <p className="text-slate-500">
-            Add-ons help enhance your gaming experience.
+            Add-ons help you expand your profile.
           </p>
         </div>
         <div className="mt-5 flex flex-col gap-4">

@@ -4,7 +4,6 @@ import { RootState } from '../redux/store';
 
 const SpinnerComponent = () => {
   const { showSpinner } = useSelector((state: RootState) => state.showSpinner);
-  console.log(showSpinner, 'show spinner');
 
   return (
     <>
