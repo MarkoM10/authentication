@@ -46,7 +46,7 @@ const ProgressBar = () => {
   ];
 
   return (
-    <div className="col-span-1 lg:bg-regal-blue pt-5 rounded-xl flex justify-center absolute lg:relative top-12 lg:top-0 left-0 w-full">
+    <div className="col-span-1 lg:bg-regal-blue pt-5 rounded-xl flex justify-center absolute lg:relative top-0 left-0 w-full">
       <ol className="relative flex justify-evenly items-center lg:block text-gray-500 border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
         {steps.map((stepInfo, index) => (
           <li key={index} className="mb-10 ms-6 px-3 relative">

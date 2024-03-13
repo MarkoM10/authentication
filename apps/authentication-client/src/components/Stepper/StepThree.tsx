@@ -88,7 +88,7 @@ const StepThree = () => {
 
   return (
     <div className="col-span-3 flex justify-center">
-      <div className="lg:relative lg:w-3/4">
+      <div className="lg:relative w-full lg:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Pick add-ons
@@ -101,7 +101,7 @@ const StepThree = () => {
           {addonsArray.map((el) => (
             <div
               key={el.id}
-              className={`flex justify-between px-4 items-center h-20 border border-gray-200 rounded dark:border-gray-700 ${addonPicked}`}
+              className={`flex justify-between px-2 lg:px-4 items-center h-20 border border-gray-200 rounded dark:border-gray-700 ${addonPicked}`}
             >
               <div className="flex items-center gap-2 ">
                 <input

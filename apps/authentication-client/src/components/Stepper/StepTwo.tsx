@@ -101,7 +101,7 @@ const StepTwo = () => {
 
   return (
     <div className="col-span-3 flex justify-center">
-      <div className="lg:relative lg:w-3/4">
+      <div className="lg:relative w-full lg:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Select your plan
@@ -110,14 +110,14 @@ const StepTwo = () => {
             You have the option of monthly or yearly billing.
           </p>
         </div>
-        <div className="mt-5 w-full flex flex-col lg:grid lg:grid-cols-3 gap-4 ">
+        <div className="mt-5 w-full flex flex-col lg:grid lg:grid-cols-3 gap-2 lg:gap-4 ">
           {planArray.map((el) => (
             <div
               key={el.id}
               className={el.clickedStyle}
               onClick={() => handlePlan(el)}
             >
-              <div className="flex flex-col h-24 lg:h-48 p-4 max-w-lg text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+              <div className="flex flex-col h-24 lg:h-48 p-4 max-w-lg text-gray-900 bg-white rounded-lg shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                 <div className="flex lg:flex-col items-center lg:items-baseline h-full lg:justify-between">
                   {el.icon}
                   <div className="flex flex-col ml-4">

@@ -23,7 +23,7 @@ const Stepper = () => {
   };
 
   return (
-    <div className="lg:w-1/2 w-11/12 h-2/3 dark:bg-gray-800 p-8 rounded-xl">
+    <div className="lg:w-1/2 w-11/12 lg:h-2/3 dark:bg-gray-800 p-8 rounded-xl">
       <div className="lg:grid lg:grid-cols-4 gap-4 w-full h-full">
         <ProgressBar />
         <RenderStep />

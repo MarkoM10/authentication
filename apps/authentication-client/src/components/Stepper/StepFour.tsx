@@ -28,7 +28,7 @@ const StepFour = () => {
 
   return (
     <div className="col-span-3 flex justify-center h-full">
-      <div className="lg:relative lg:w-3/4">
+      <div className="lg:relative w-full lg:w-3/4">
         {showConfirm ? (
           <Confirmation />
         ) : (

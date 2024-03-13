@@ -79,7 +79,7 @@ const StepOne = () => {
 
   return (
     <div className="col-span-3 flex justify-center w-full h-full">
-      <div className="lg:relative lg:w-3/4">
+      <div className="lg:relative w-full lg:w-3/4">
         <div className="mt-3">
           <label className="text-white bold text-3xl font-bold">
             Personal Info
