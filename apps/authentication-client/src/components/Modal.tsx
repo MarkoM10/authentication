@@ -1,14 +1,35 @@
 import { CheckCircleIcon, CheckIcon } from '@heroicons/react/24/solid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setShowModal } from '../redux/slices/modalSlice';
 import { setShowConfirm } from '../redux/slices/confirmationSlice';
+import { RootState } from '../redux/store';
+import { BASE_URL, confirmDataSend } from '../utils/Helpers';
+import axios from 'axios';
+import { setShowSpinner } from '../redux/slices/spinnerSlice';
 
 const Modal = () => {
   const dispatch = useDispatch();
 
-  const handleConfirm = () => {
+  const { formData } = useSelector((state: RootState) => state);
+  const { token } = useSelector((state: RootState) => state.token);
+
+  const handleConfirm = async () => {
     dispatch(setShowModal(false));
     dispatch(setShowConfirm(true));
+
+    const multiStepFormData = confirmDataSend(formData);
+
+    try {
+      dispatch(setShowSpinner(true));
+      const response = await axios.post(
+        BASE_URL + '/subscription',
+        multiStepFormData
+      );
+      dispatch(setShowSpinner(false));
+    } catch (error) {
+      console.log(error);
+      dispatch(setShowSpinner(false));
+    }
   };
 
   return (

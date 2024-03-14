@@ -3,6 +3,8 @@ import Homepage from '../pages/Homepage';
 import RegisterPage from '../pages/RegisterPage';
 import { Route, Routes } from 'react-router-dom';
 import SpinnerComponent from '../components/SpinnerComponent';
+import PrivateRoutes from '../components/PrivateRoutes';
+import Page404 from '../pages/Page404';
 
 export function App() {
   return (
@@ -13,7 +15,10 @@ export function App() {
           <Dialogs />
           <Routes>
             <Route index element={<RegisterPage />} path="/" />
-            <Route element={<Homepage />} path="/homepage" />
+            <Route element={<PrivateRoutes />}>
+              <Route element={<Homepage />} path="/homepage" />
+            </Route>
+            <Route path="*" element={<Page404 />} />
           </Routes>
         </div>
       </div>

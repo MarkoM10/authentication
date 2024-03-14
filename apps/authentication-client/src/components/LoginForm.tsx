@@ -8,9 +8,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setShowSpinner } from '../redux/slices/spinnerSlice';
 import { setShowAlert } from '../redux/slices/alertSlice';
+import { BASE_URL } from '../utils/Helpers';
 
 const LoginForm = () => {
-  const BASE_URL = 'http://localhost:3600';
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState({

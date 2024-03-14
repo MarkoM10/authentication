@@ -11,11 +11,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setShowSpinner } from '../redux/slices/spinnerSlice';
 import { setShowAlert } from '../redux/slices/alertSlice';
+import { setToken } from '../redux/slices/tokenSlice';
+import { BASE_URL } from '../utils/Helpers';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const BASE_URL = 'http://localhost:3600';
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState({
@@ -119,6 +120,9 @@ const RegisterForm = () => {
           userRegisterData
         );
 
+        console.log(response.data.token, 'res');
+
+        dispatch(setToken(response.data.token));
         dispatch(setShowSpinner(false));
 
         if (response.status === 200) {
