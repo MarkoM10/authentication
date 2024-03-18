@@ -125,6 +125,15 @@ const LoginForm = () => {
               alertParagraph: 'You are not registered or token has expired.',
             })
           );
+          setTimeout(() => {
+            dispatch(
+              setShowAlert({
+                showAlert: false,
+                alertHeading: '',
+                alertParagraph: '',
+              })
+            );
+          }, 5000);
         } else {
           dispatch(setShowSpinner(false));
           dispatch(
@@ -134,6 +143,15 @@ const LoginForm = () => {
               alertParagraph: "User with given credentials doesn't exist.",
             })
           );
+          setTimeout(() => {
+            dispatch(
+              setShowAlert({
+                showAlert: false,
+                alertHeading: '',
+                alertParagraph: '',
+              })
+            );
+          }, 5000);
         }
       }
     }

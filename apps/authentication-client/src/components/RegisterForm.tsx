@@ -136,6 +136,15 @@ const RegisterForm = () => {
               'Email already exists. Please use a different email address or try logging in.',
           })
         );
+        setTimeout(() => {
+          dispatch(
+            setShowAlert({
+              showAlert: false,
+              alertHeading: '',
+              alertParagraph: '',
+            })
+          );
+        }, 5000);
       }
     }
   };

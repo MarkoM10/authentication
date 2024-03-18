@@ -133,19 +133,57 @@ app.post('/login', verifyJWT, (req, res) => {
 });
 
 app.post('/subscription', verifyJWT, (req, res) => {
-  console.log(req, res);
-
+  const userId = req.userId;
   const { name, phoneNumber, address } = req.body.personalData;
   const { planName, planPrice, planSubscription } = req.body.planData;
-  const { addon1, addon2, addon3 } = req.body.addonsData;
+  const addonsData = req.body.addonsData;
 
-  console.log(name, phoneNumber, address);
-  console.log(planName, planPrice, planSubscription);
-  console.log(addon1, addon2, addon3);
+  const addons = [];
 
-  res.status(200).json({ message: 'Subscription data successful' });
+  for (const key in addonsData) {
+    if (addonsData.hasOwnProperty(key)) {
+      const addon = addonsData[key];
+      addons.push({
+        label: addon.label,
+        price: addon.price,
+      });
+    }
+  }
+
+  // Insert profile data
+  db.query(
+    'INSERT INTO profiles (user_id, name, phoneNumber, address) VALUES (?, ?, ?, ?)',
+    [userId, name, phoneNumber, address],
+    (err, profileResult) => {
+      if (err) {
+        console.error('Error inserting profile:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      // Insert subscription data
+      db.query(
+        'INSERT INTO subscriptions (user_id, planName, planPrice, planSubscription, addon1, addon2, addon3) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [
+          userId,
+          planName,
+          planPrice,
+          planSubscription,
+          addons[0]?.label,
+          addons[1]?.label,
+          addons[2]?.label,
+        ],
+        (err, subscriptionResult) => {
+          if (err) {
+            console.error('Error inserting subscription:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
+
+          res.status(200).json({ message: 'Subscription data successful' });
+        }
+      );
+    }
+  );
 });
-
 app.listen(3600, () => {
   console.log('Server is listening on port 3600');
 });
