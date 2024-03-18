@@ -120,8 +120,6 @@ const RegisterForm = () => {
           userRegisterData
         );
 
-        console.log(response.data.token, 'res');
-
         dispatch(setToken(response.data.token));
         dispatch(setShowSpinner(false));
 
@@ -129,7 +127,6 @@ const RegisterForm = () => {
           navigate('/homepage');
         }
       } catch (error) {
-        // console.log('Error: ', error);
         dispatch(setShowSpinner(false));
         dispatch(
           setShowAlert({
@@ -139,16 +136,6 @@ const RegisterForm = () => {
               'Email already exists. Please use a different email address or try logging in.',
           })
         );
-
-        setTimeout(() => {
-          dispatch(
-            setShowAlert({
-              showAlert: false,
-              alertHeading: '',
-              alertParagraph: '',
-            })
-          );
-        }, 5000);
       }
     }
   };

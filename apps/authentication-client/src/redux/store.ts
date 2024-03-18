@@ -9,6 +9,8 @@ import { formDataReducer } from './slices/formDataSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import { tokenReducer } from './slices/tokenSlice';
+import storage from 'redux-persist/lib/storage';
+import { authReducer } from './slices/authSlice';
 
 const formDataPersistConfig = {
   key: 'formData',
@@ -16,7 +18,7 @@ const formDataPersistConfig = {
 };
 const tokenPersistConfig = {
   key: 'token',
-  storage: storageSession,
+  storage: storage,
 };
 
 const persistedFormDataReducer = persistReducer(
@@ -36,6 +38,7 @@ const store = configureStore({
     confirm: confirmReducer,
     formData: persistedFormDataReducer,
     token: persistedTokenReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

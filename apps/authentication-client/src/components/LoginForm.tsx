@@ -1,16 +1,18 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setShowLogin } from '../redux/slices/loginSlice';
 import { validatePassword, validateUsername } from '../utils/validation';
-import logo from '../assets/images/logo.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setShowSpinner } from '../redux/slices/spinnerSlice';
 import { setShowAlert } from '../redux/slices/alertSlice';
+import { RootState } from '../redux/store';
 import { BASE_URL } from '../utils/Helpers';
 
 const LoginForm = () => {
+  const { token } = useSelector((state: RootState) => state.token);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState({
@@ -91,17 +93,18 @@ const LoginForm = () => {
     const { username, password } = formData;
 
     if (isValid) {
-      console.log('Data valid for sending...');
-      console.log(username, password);
-
       const userLoginData = { username, password };
 
       try {
         dispatch(setShowSpinner(true));
-        const response = await axios.post(BASE_URL + '/login', userLoginData);
-
+        const response = await axios.post(BASE_URL + '/login', userLoginData, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token,
+          },
+        });
+        console.log(response);
         const resStatus = response.status;
-
         if (resStatus === 200) {
           dispatch(setShowSpinner(false));
           dispatch(
@@ -111,25 +114,27 @@ const LoginForm = () => {
           );
           navigate('/homepage');
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error:', error);
-        dispatch(setShowSpinner(false));
-        dispatch(
-          setShowAlert({
-            showAlert: true,
-            alertHeading: 'User not found',
-            alertParagraph: "User with given credentials doesn't exist.",
-          })
-        );
-        setTimeout(() => {
+        if (error.response.data.auth === false) {
+          dispatch(setShowSpinner(false));
           dispatch(
             setShowAlert({
-              showAlert: false,
-              alertHeading: '',
-              alertParagraph: '',
+              showAlert: true,
+              alertHeading: 'Not authenticated',
+              alertParagraph: 'You are not registered or token has expired.',
             })
           );
-        }, 5000);
+        } else {
+          dispatch(setShowSpinner(false));
+          dispatch(
+            setShowAlert({
+              showAlert: true,
+              alertHeading: 'User not found',
+              alertParagraph: "User with given credentials doesn't exist.",
+            })
+          );
+        }
       }
     }
   };

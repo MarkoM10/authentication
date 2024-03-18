@@ -6,6 +6,7 @@ import { RootState } from '../redux/store';
 import { BASE_URL, confirmDataSend } from '../utils/Helpers';
 import axios from 'axios';
 import { setShowSpinner } from '../redux/slices/spinnerSlice';
+import { setAuth } from '../redux/slices/authSlice';
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -14,8 +15,9 @@ const Modal = () => {
   const { token } = useSelector((state: RootState) => state.token);
 
   const handleConfirm = async () => {
-    dispatch(setShowModal(false));
     dispatch(setShowConfirm(true));
+
+    dispatch(setShowModal(false));
 
     const multiStepFormData = confirmDataSend(formData);
 
@@ -23,10 +25,18 @@ const Modal = () => {
       dispatch(setShowSpinner(true));
       const response = await axios.post(
         BASE_URL + '/subscription',
-        multiStepFormData
+        multiStepFormData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token,
+          },
+        }
       );
       dispatch(setShowSpinner(false));
+      dispatch(setAuth(true));
     } catch (error) {
+      dispatch(setAuth(false));
       console.log(error);
       dispatch(setShowSpinner(false));
     }
